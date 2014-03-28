@@ -94,4 +94,3 @@ func applyRule(str string, rules []*Rule, this *Inflector) string{
 	
 	return str
 }
-
