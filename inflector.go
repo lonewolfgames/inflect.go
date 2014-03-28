@@ -84,7 +84,7 @@ func applyRule(str string, rules []*Rule, this *Inflector) string{
 	}
 	var rule *Rule
 	
-	for i := len(rules)-1; i > 0; i-- {
+	for i := len(rules)-1; i >= 0; i-- {
 		rule = rules[i]
 		
 		if rule.Regexp.MatchString(str) {
