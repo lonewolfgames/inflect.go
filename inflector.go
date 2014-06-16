@@ -4,12 +4,12 @@ import "regexp"
 
 type Rule struct{
 	Regexp   *regexp.Regexp
-    Replacer string     
+    Replacer  string     
 }
 
 func NewRule(matcher, replacer string) (this *Rule){
 	this = new(Rule)
-	this.Regexp = regexp.MustCompile(matcher)
+	this.Regexp = regexp.MustCompile("(?i)"+ matcher)
 	this.Replacer = replacer
 	
 	return
@@ -26,7 +26,7 @@ type Inflector struct{
 func NewInflector(locale string) (this *Inflector){
 	this = new(Inflector)
 	
-	this.Locale = locale;
+	this.Locale = locale
 	this.Plurals = make([]*Rule, 0)
 	this.Singulars = make([]*Rule, 0)
 	this.Uncountables = make([]string, 0)
@@ -63,8 +63,8 @@ func (this *Inflector) Plural(matcher, replacer string) *Inflector{
 
 func (this *Inflector) Irregular(singular, plural string) *Inflector{
 	
-	this.Plural("\\b" + singular + "\\b", plural);
-    this.Singular("\\b" + plural + "\\b", singular);
+	this.Plural("\\b" + singular + "\\b", plural)
+    this.Singular("\\b" + plural + "\\b", singular)
 	return this
 }
 
@@ -84,7 +84,7 @@ func applyRule(str string, rules []*Rule, this *Inflector) string{
 	}
 	var rule *Rule
 	
-	for i := len(rules)-1; i > 0; i-- {
+	for i := len(rules)-1; i >= 0; i-- {
 		rule = rules[i]
 		
 		if rule.Regexp.MatchString(str) {
