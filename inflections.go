@@ -30,9 +30,11 @@ func init() {
 	en.Singular(`([^aeiouy]o)es$`, "${1}")
 	en.Singular(`([^aeiouy])ies$`, "${1}y")
 
+	en.Irregular("man", "men")
 	en.Irregular("child", "children")
 	en.Irregular("person", "people")
 	en.Irregular("self", "selves")
 
+	en.Uncountable("police")
 	en.Uncountable("series")
 }
