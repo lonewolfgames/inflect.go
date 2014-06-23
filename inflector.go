@@ -2,13 +2,13 @@ package inflect
 
 import "regexp"
 
-type Rule struct {
+type rule struct {
 	Regexp   *regexp.Regexp
 	Replacer string
 }
 
-func NewRule(matcher, replacer string) (this *Rule) {
-	this = new(Rule)
+func newRule(matcher, replacer string) (this *rule) {
+	this = new(rule)
 	this.Regexp = regexp.MustCompile("(?i)" + matcher)
 	this.Replacer = replacer
 
@@ -16,48 +16,48 @@ func NewRule(matcher, replacer string) (this *Rule) {
 }
 
 type Inflector struct {
-	Locale       string
-	Plurals      []*Rule
-	Singulars    []*Rule
-	Uncountables []string
+	locale       string
+	plurals      []*rule
+	singulars    []*rule
+	uncountables []string
 }
 
 func NewInflector(locale string) *Inflector {
 	this := new(Inflector)
 
-	this.Locale = locale
+	this.locale = locale
 
 	return this
 }
 
 func (this *Inflector) Clear() *Inflector {
 
-	this.Plurals = nil
-	this.Singulars = nil
-	this.Uncountables = nil
+	this.plurals = nil
+	this.singulars = nil
+	this.uncountables = nil
 
 	return this
 }
 
 func (this *Inflector) Singularize(str string) string {
 
-	return applyRule(str, this.Singulars, this)
+	return applyRules(str, this.singulars, this)
 }
 
 func (this *Inflector) Pluralize(str string) string {
 
-	return applyRule(str, this.Plurals, this)
+	return applyRules(str, this.plurals, this)
 }
 
 func (this *Inflector) Singular(matcher, replacer string) *Inflector {
 
-	this.Singulars = append(this.Singulars, NewRule(matcher, replacer))
+	this.singulars = append(this.singulars, newRule(matcher, replacer))
 	return this
 }
 
 func (this *Inflector) Plural(matcher, replacer string) *Inflector {
 
-	this.Plurals = append(this.Plurals, NewRule(matcher, replacer))
+	this.plurals = append(this.plurals, newRule(matcher, replacer))
 	return this
 }
 
@@ -70,23 +70,23 @@ func (this *Inflector) Irregular(singular, plural string) *Inflector {
 
 func (this *Inflector) Uncountable(uncountable string) *Inflector {
 
-	this.Uncountables = append(this.Uncountables, uncountable)
+	this.uncountables = append(this.uncountables, uncountable)
 	return this
 }
 
-func applyRule(str string, rules []*Rule, this *Inflector) string {
-	for _, word := range this.Uncountables {
+func applyRules(str string, rules []*rule, this *Inflector) string {
+	for _, word := range this.uncountables {
 		if word == str {
 			return str
 		}
 	}
-	var rule *Rule
+	var ruleToApply *rule
 
 	for i := len(rules) - 1; i >= 0; i-- {
-		rule = rules[i]
+		ruleToApply = rules[i]
 
-		if rule.Regexp.MatchString(str) {
-			return rule.Regexp.ReplaceAllString(str, rule.Replacer)
+		if ruleToApply.Regexp.MatchString(str) {
+			return ruleToApply.Regexp.ReplaceAllString(str, ruleToApply.Replacer)
 		}
 	}
 
