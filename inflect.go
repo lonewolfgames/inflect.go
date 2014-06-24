@@ -8,7 +8,6 @@ import (
 
 var (
 	spliter    = regexp.MustCompile(`[ \_\-\.]+`)
-	upperCase  = regexp.MustCompile(`([A-Z])`)
 	underscore = regexp.MustCompile(`([a-z\d])([A-Z])`)
 	id         = regexp.MustCompile(`_id$`)
 )

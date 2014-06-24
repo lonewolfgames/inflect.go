@@ -80,13 +80,13 @@ func apply_rules(str string, rules []*rule, this *Inflector) string {
 			return str
 		}
 	}
-	var ruleToApply *rule
+	var rule_to_apply *rule
 
 	for i := len(rules) - 1; i >= 0; i-- {
-		ruleToApply = rules[i]
+		rule_to_apply = rules[i]
 
-		if ruleToApply.Regexp.MatchString(str) {
-			return ruleToApply.Regexp.ReplaceAllString(str, ruleToApply.Replacer)
+		if rule_to_apply.Regexp.MatchString(str) {
+			return rule_to_apply.Regexp.ReplaceAllString(str, rule_to_apply.Replacer)
 		}
 	}
 
