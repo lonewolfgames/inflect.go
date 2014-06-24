@@ -7,7 +7,7 @@ type rule struct {
 	Replacer string
 }
 
-func newRule(matcher, replacer string) (this *rule) {
+func new_rule(matcher, replacer string) (this *rule) {
 	this = new(rule)
 	this.Regexp = regexp.MustCompile("(?i)" + matcher)
 	this.Replacer = replacer
@@ -41,23 +41,23 @@ func (this *Inflector) Clear() *Inflector {
 
 func (this *Inflector) Singularize(str string) string {
 
-	return applyRules(str, this.singulars, this)
+	return apply_rules(str, this.singulars, this)
 }
 
 func (this *Inflector) Pluralize(str string) string {
 
-	return applyRules(str, this.plurals, this)
+	return apply_rules(str, this.plurals, this)
 }
 
 func (this *Inflector) Singular(matcher, replacer string) *Inflector {
 
-	this.singulars = append(this.singulars, newRule(matcher, replacer))
+	this.singulars = append(this.singulars, new_rule(matcher, replacer))
 	return this
 }
 
 func (this *Inflector) Plural(matcher, replacer string) *Inflector {
 
-	this.plurals = append(this.plurals, newRule(matcher, replacer))
+	this.plurals = append(this.plurals, new_rule(matcher, replacer))
 	return this
 }
 
@@ -74,7 +74,7 @@ func (this *Inflector) Uncountable(uncountable string) *Inflector {
 	return this
 }
 
-func applyRules(str string, rules []*rule, this *Inflector) string {
+func apply_rules(str string, rules []*rule, this *Inflector) string {
 	for _, word := range this.uncountables {
 		if word == str {
 			return str
